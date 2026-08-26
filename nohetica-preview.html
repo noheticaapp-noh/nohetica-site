@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nohética — Gere. Resolva. Aprenda.</title>
+<meta name="description" content="Nohética é um aplicativo para apoiar o estudo de Matemática. Gere expressões numéricas, veja a resolução passo a passo e aprenda com o processo.">
+
+<!-- Tipografia: Space Grotesk (títulos), Inter (texto), JetBrains Mono (expressões) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================
+   Nohética — Landing Page
+   Identidade visual: papel #F6F6FB · tinta #171733
+   marca #5B4FE8 · resolvido #2FAE66 · linha #DEDEF0
+   ========================================================= */
+
+:root {
+  --color-paper: #F6F6FB;
+  --color-ink: #232726;
+  --color-brand: #5B4FE8;
+  --color-brand-dark: #4A3FD1;
+  --color-solved: #2FAE66;
+  --color-line: #DEDEF0;
+  --color-ink-soft: rgba(35, 39, 38, 0.62);
+  --color-ink-faint: rgba(35, 39, 38, 0.38);
+
+  --font-display: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+
+  --max-width: 1120px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.75rem;
+  --space-lg: 3rem;
+  --space-xl: 5rem;
+}
+
+/* ---------- Reset básico ---------- */
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  color: var(--color-ink);
+  margin: 0;
+  line-height: 1.15;
+}
+
+p { margin: 0; }
+
+a { color: inherit; text-decoration: none; }
+
+ul { list-style: none; margin: 0; padding: 0; }
+
+img, svg { display: block; max-width: 100%; }
+
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 3px;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+.container-narrow {
+  max-width: 680px;
+}
+
+.section {
+  padding: var(--space-xl) 0;
+}
+
+.section-title {
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.1rem);
+  font-weight: 600;
+  margin-bottom: var(--space-lg);
+}
+
+/* ---------- Botões ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--color-brand);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--color-brand-dark);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--color-line);
+  color: var(--color-ink);
+}
+
+.btn-ghost:hover {
+  border-color: var(--color-brand);
+  color: var(--color-brand);
+}
+
+.btn-small {
+  padding: 0.55rem 1.1rem;
+  font-size: 0.8rem;
+}
+
+/* ---------- Cabeçalho ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(246, 246, 251, 0.85);
+  backdrop-filter: saturate(180%) blur(10px);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+}
+
+.brand-logo {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  padding: clamp(2.5rem, 4vw, 5rem) 0 var(--space-xl);
+  overflow: hidden;
+  background-image:
+    linear-gradient(var(--color-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+  background-size: 44px 44px;
+  background-position: center top;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 12%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(91, 79, 232, 0.35), transparent);
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.status-note {
+  font-size: 0.85rem;
+  color: var(--color-ink-faint);
+  margin-top: 1rem;
+  max-width: 46ch;
+}
+
+.status-note-center {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: #232726;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.9rem;
+}
+
+.hero-title {
+  font-size: clamp(2.2rem, 1.7rem + 2.5vw, 3.4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.1rem;
+}
+
+.hero-text {
+  font-size: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+  color: var(--color-ink-soft);
+  max-width: 46ch;
+  margin-bottom: 1.75rem;
+}
+
+/* ---------- Botão estilo "loja de aplicativos" ---------- */
+.btn-store {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.7rem 1.3rem;
+  border-radius: 12px;
+  background: #028EE6;
+  color: #fff;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.btn-store:hover {
+  transform: translateY(-1px);
+  background: #0277BD;
+}
+
+.btn-store-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.btn-store-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.btn-store-small {
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.btn-store-big {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* ---------- Mockups de celular (Hero) ---------- */
+.hero-visual {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  min-height: 340px;
+  margin: 0 auto;
+}
+
+.phone-mock {
+  position: absolute;
+  width: 64%;
+  max-width: 230px;
+  background: #fff;
+  border: 8px solid var(--color-ink);
+  border-radius: 32px;
+  box-shadow: 0 30px 60px -30px rgba(23, 23, 51, 0.45);
+  overflow: hidden;
+}
+
+.phone-notch {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 18px;
+  background: var(--color-ink);
+  border-radius: 0 0 12px 12px;
+  z-index: 2;
+}
+
+.phone-screen {
+  padding: 2rem 0.85rem 0.85rem;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+.phone-screen-header {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.85rem;
+}
+
+.phone-back {
+  top: 0;
+  right: 2%;
+  transform: scale(0.86);
+  transform-origin: top right;
+  z-index: 1;
+  opacity: 0.94;
+}
+
+.phone-front {
+  bottom: 0;
+  left: 2%;
+  z-index: 2;
+}
+
+/* ---------- Tela "Passo a passo" (phone-back) ---------- */
+.phone-step-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.phone-step {
+  border: 1px solid var(--color-line);
+  border-radius: 10px;
+  padding: 0.5rem 0.65rem;
+}
+
+.phone-step-num {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--color-brand);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.phone-step-expr {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  margin-top: 0.2rem;
+}
+
+.phone-step-result {
+  border-color: var(--color-solved);
+  background: rgba(47, 174, 102, 0.06);
+}
+
+.phone-step-result .phone-step-num {
+  color: var(--color-solved);
+}
+
+/* ---------- Tela "Gerar" (phone-front) ---------- */
+.phone-front .expression-card {
+  padding: 1.1rem 0.9rem;
+  box-shadow: none;
+  border-radius: var(--radius-md);
+}
+
+.phone-front .expression-display {
+  font-size: 1.1rem;
+  min-height: 2.2em;
+}
+
+.phone-generate-btn {
+  margin-top: 0.85rem;
+  padding: 0.65rem 1rem;
+  background: var(--color-brand);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: default;
+}
+
+.phone-tabbar {
+  margin-top: auto;
+  padding-top: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--color-line);
+}
+
+.phone-tab {
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  color: var(--color-ink-faint);
+}
+
+.phone-tab.is-active {
+  color: var(--color-brand);
+  font-weight: 600;
+}
+
+/* ---------- Expressão viva (elemento de assinatura) ---------- */
+.expression-card {
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 1.5rem;
+  box-shadow: 0 20px 45px -25px rgba(23, 23, 51, 0.35);
+}
+
+.expression-card-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-ink-faint);
+  margin-bottom: 0.9rem;
+}
+
+.expression-display {
+  font-family: var(--font-mono);
+  font-size: clamp(1.3rem, 1.1rem + 1vw, 1.7rem);
+  font-weight: 500;
+  min-height: 2.6em;
+  display: flex;
+  align-items: center;
+  word-break: break-word;
+}
+
+.expression-display .hl {
+  background: rgba(91, 79, 232, 0.14);
+  color: var(--color-brand);
+  border-radius: 6px;
+  padding: 0.05em 0.25em;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.expression-display.is-result .hl {
+  background: rgba(47, 174, 102, 0.14);
+  color: var(--color-solved);
+}
+
+.expression-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-ink-faint);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-brand);
+  transition: background-color 0.3s ease;
+}
+
+.status-dot.is-solved {
+  background: var(--color-solved);
+}
+
+/* ---------- Como funciona ---------- */
+.steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.step h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.step p {
+  color: var(--color-ink-soft);
+  font-size: 0.96rem;
+  max-width: 34ch;
+}
+
+.step-marker {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.step-number {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-brand);
+  letter-spacing: 0.04em;
+}
+
+.step-icon {
+  width: 30px;
+  height: 30px;
+  color: var(--color-brand);
+  flex-shrink: 0;
+}
+
+/* ---------- Sobre ---------- */
+.about {
+  border-top: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.about-text {
+  font-size: clamp(1.05rem, 1rem + 0.3vw, 1.25rem);
+  color: var(--color-ink-soft);
+  text-align: center;
+}
+
+.about-text + .about-text {
+  margin-top: 1.1rem;
+}
+
+.about-lead {
+  font-size: clamp(1.05rem, 1rem + 0.3vw, 1.2rem);
+  font-weight: 500;
+  color: var(--color-ink);
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.about-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-brand);
+  text-align: center;
+  margin-bottom: 1.1rem;
+}
+
+/* ---------- Recursos ---------- */
+.features-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.feature-card {
+  background: #fff;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+}
+
+.feature-card h3 {
+  font-size: 1.02rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.feature-card p {
+  font-size: 0.92rem;
+  color: var(--color-ink-soft);
+}
+
+/* ---------- Tecnologias ---------- */
+.tech {
+  padding: var(--space-lg) 0;
+}
+
+.tech-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-ink-faint);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.tech-list li {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--color-ink-soft);
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+}
+
+/* ---------- CTA final ---------- */
+.cta-final {
+  text-align: center;
+}
+
+.cta-text {
+  color: var(--color-ink-soft);
+  font-size: 1.05rem;
+  margin: 1rem 0 1.75rem;
+}
+
+/* ---------- Rodapé ---------- */
+.site-footer {
+  border-top: 1px solid var(--color-line);
+  padding: var(--space-lg) 0;
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.wordmark-footer {
+  font-size: 1.05rem;
+}
+
+.footer-tagline {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-ink-faint);
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.footer-link {
+  font-size: 0.85rem;
+  color: var(--color-ink-faint);
+}
+
+.footer-link:hover {
+  color: var(--color-brand);
+}
+
+/* ---------- Responsividade: telas maiores ---------- */
+@media (min-width: 720px) {
+  .steps {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-inner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+@media (min-width: 640px) {
+  .hero-visual {
+    max-width: 420px;
+    min-height: 400px;
+  }
+}
+
+@media (min-width: 960px) {
+  .hero-inner {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+
+  .hero-visual {
+    max-width: 460px;
+    min-height: 440px;
+    margin-left: auto;
+    margin-right: 0;
+  }
+}
+
+/* ---------- Movimento reduzido ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .btn, .expression-display .hl, .status-dot { transition: none; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ===== Cabeçalho ===== -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="#" class="brand-mark" aria-label="Nohética">
+      <img src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAxNzMuOTk5OTk5OTk5OTk5OTcgMTA5MCA0MDUiIHdpZHRoPSIxMDkwIiBoZWlnaHQ9IjQwNiI+Cgk8c3R5bGU+CgkJLnMwIHsgZmlsbDogIzE0ODA2ZSB9IAoJCS5zMSB7IGZpbGw6ICNlOTY0M2EgfSAKCQkuczIgeyBmaWxsOiAjNmNhYWM3IH0gCgkJLnMzIHsgZmlsbDogIzQ4YWVlYyB9IAoJCS5zNCB7IGZpbGw6ICNiNmMxMjAgfSAKCQkuczUgeyBmaWxsOiAjZWQ0NjVhIH0gCgkJLnM2IHsgZmlsbDogIzY3MDZhYiB9IAoJCS5zNyB7IGZpbGw6ICMyYWVkZDEgfSAKCTwvc3R5bGU+Cgk8ZyBpZD0iTGF5ZXIgMSI+CgkJPGcgaWQ9IkJhY2tncm91bmQiPgoJCQk8cGF0aCBpZD0iUGF0aCAxIGNvcHkiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xhc3M9InMwIiBkPSJtMzA0IDMxMS4xYzQuMTIgMC4zMyA5LjUyIDEuMTYgMTIgMS44NiAyLjQ4IDAuNjkgNi43NSAyLjM5IDkuNSAzLjc3IDIuNzUgMS4zOCA3IDQuMTQgOS40NSA2LjE0IDIuNDUgMiA1LjczIDQuOTggNy4yOSA2LjYzIDEuNTcgMS42NSA0Ljg2IDcuMDUgNy4zMSAxMiAyLjQ2IDQuOTUgNS40NCAxMi42IDYuNjMgMTcgMS44NCA2Ljg1IDIuMTYgMTAuNzQgMi4xOCAyNyAwLjAyIDE3LjMtMC4yMSAxOS44NS0yLjU0IDI4LjUtMS40MSA1LjIyLTQuMDMgMTIuNDItNS44MyAxNi0yLjA2IDQuMS01Ljg5IDkuMTQtMTAuMzggMTMuNjUtNS4xOCA1LjIyLTkuMTUgOC4xNC0xNC42MSAxMC43Ny00LjQzIDIuMTQtMTAuOTggNC4yNS0xNiA1LjE3LTUuNzUgMS4wNi0xMS40MiAxLjM4LTE3LjUgMS4wMS00Ljk1LTAuMzEtMTEuOTMtMS40Ni0xNS41LTIuNTUtMy41Ny0xLjEtOS4zNy0zLjctMTIuODctNS43Ny0zLjUtMi4wOC04LjktNi40OC0xMi05Ljc5LTMuMjItMy40NC03LjIxLTkuMjEtOS4zMi0xMy41LTIuMDQtNC4xMi00Ljc0LTExLjMyLTYtMTUuOTktMi4wNi03LjU5LTIuMy0xMC42LTIuMjItMjggMC4wNy0xNi42NSAwLjQtMjAuNjcgMi4yNC0yNy41IDEuMTktNC40IDMuOTMtMTEuNiA2LjA5LTE2IDIuNzItNS41NCA1Ljc5LTkuODQgOS45OS0xNCAzLjM0LTMuMyA4LjIxLTcuMjMgMTAuODMtOC43NCAyLjYyLTEuNTEgNy42OS0zLjcyIDExLjI2LTQuOTEgMy41Ny0xLjE5IDEwLjEtMi40MyAxNC41LTIuNzYgNC40LTAuMzIgMTEuMzctMC4zMiAxNS41IDAuMDF6bS0xNi4wNyA0MS4xOWMtMi40MSAxLjYtNC4xIDMuOTgtNS42OCA4LTEuMjQgMy4xNC0yLjc0IDEwLjEtMy4zMyAxNS40Ni0wLjc4IDYuOTUtMC43OCAxMi4zMy0wLjAyIDE4Ljc1IDAuNTkgNC45NSAxLjc0IDExLjAyIDIuNTYgMTMuNSAwLjgyIDIuNDggMy4wMyA2LjMgNC45IDguNSAzLjMgMy44NyAzLjYxIDQgOS42IDQgNS44OCAwIDYuMzctMC4xOSA5LjYyLTMuNzUgMS44OC0yLjA2IDQuMTQtNi4xMSA1LjAzLTkgMC45OS0zLjI0IDEuOC0xMC42MSAyLjExLTE5LjI1IDAuMzItOC44OSAwLjA2LTE2LjE5LTAuNy0yMC0wLjY2LTMuMy0yLjI4LTguMDItMy42MS0xMC41LTEuMzMtMi40OC0zLjc2LTUuMjktNS40MS02LjI1LTEuNjUtMC45Ni00Ljk0LTEuNzUtNy4zMi0xLjc1LTIuODMgMC01LjUgMC43OS03Ljc1IDIuMjl6Ii8+CgkJCTxwYXRoIGlkPSJQYXRoIDEgY29weSAyIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsYXNzPSJzMSIgZD0ibTU3NS41IDIzOS42NmMtMS42NSAwLjg3LTQuMDYgMi41NC01LjM1IDMuNzEtMS4yOSAxLjE3LTcuMDggOS4xLTEyLjg2IDE3LjYzLTUuNzggOC41Mi0xMS4xMyAxNi43NC0xMS45IDE4LjI1LTAuNzYgMS41MS0xLjM3IDQuODktMS4zNSA3LjUgMC4wNCA0LjEzIDAuNTMgNS4yMyAzLjc1IDguMzkgMi42OSAyLjY0IDQuOTUgMy44MyA4LjIxIDQuMzUgMy4yNiAwLjUxIDUuNiAwLjI0IDguNS0wLjk3IDIuMi0wLjkzIDguOTUtNi4wOSAxNS0xMS40OCA2LjA1LTUuNCAxMy4zNi0xMi4zNCAxNi4yNS0xNS40MiAyLjg5LTMuMDkgNS43LTYuNzUgNi4yNS04LjEyIDAuNTUtMS4zOCAxLTQuMyAxLTYuNSAwLTIuMi0wLjg2LTUuNjktMS45LTcuNzUtMS4wNS0yLjA2LTIuOTYtNC43NC00LjI1LTUuOTQtMS4yOS0xLjIxLTQuMDQtMi45LTYuMS0zLjc1LTIuMDYtMC44Ni01LjY2LTEuNTQtOC0xLjUyLTIuMzQgMC4wMi01LjYgMC43NS03LjI1IDEuNjJ6Ii8+CgkJCTxwYXRoIGlkPSJQYXRoIDEgY29weSAzIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsYXNzPSJzMiIgZD0ibTc0OSAyNjAuMTJjLTIuNDggMC40OS02LjIyIDIuMTMtOC4zMiAzLjY0LTIuMjMgMS42LTQuODQgNC44My02LjI2IDcuNzQtMS41OSAzLjI2LTIuNDUgNi43NC0yLjQ1IDEwIDAgMi43NSAwLjUyIDYuNTcgMS4xNSA4LjUgMC42NCAxLjkyIDIuMjIgNC45NiAzLjUyIDYuNzUgMS4zIDEuNzkgNC4xNiA0LjE1IDYuMzYgNS4yNSAyLjIgMS4xIDYuODEgMi4yOSAxMC4yNSAyLjY0IDQuNzUgMC40OSA3LjU3IDAuMiAxMS43NS0xLjIxIDMuMDItMS4wMSA2LjgyLTIuOTkgOC40Mi00LjM5IDEuNjEtMS40IDMuODEtNC41NyA0Ljg4LTcuMDQgMS4xNC0yLjYyIDEuOTYtNi44IDEuOTgtMTAgMC4wMS0zLjgtMC43Mi03LjAyLTIuMzgtMTAuNDMtMS4zMi0yLjcyLTMuNzUtNS45Ni01LjQtNy4yLTEuNjUtMS4yNC01LjAyLTIuOTctNy41LTMuODQtMi40OC0wLjg2LTYuMDgtMS41MS04LTEuNDQtMS45MiAwLjA3LTUuNTIgMC41My04IDEuMDN6Ii8+CgkJCTxwYXRoIGlkPSJQYXRoIDEgY29weSA0IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsYXNzPSJzMyIgZD0ibTgzLjUgMjYwLjk0Yy0yLjc1IDAuNDQtNy4yNSAxLjg2LTEwIDMuMTUtMi43NSAxLjMtNi44MyA0LjE3LTkuMDYgNi4zOS0yLjM1IDIuMzItNS4xIDYuNTUtNi41IDEwLjAybC0yLjQ0IDZ2MTUyYzMuNTcgNy43NSA1LjgyIDExLjI4IDcuMyAxMi44NCAxLjQ5IDEuNTYgNC41IDMuNzcgNi43IDQuOSAyLjI5IDEuMTggNi43OCAyLjI3IDEwLjUgMi41NSA0LjcxIDAuMzUgOC4wMS0wLjAyIDEyLTEuMzUgMy4wMy0xLjAxIDcuMDItMy4yMSA4Ljg4LTQuODkgMS44Ni0xLjY4IDQuMjItNC43NCA1LjI1LTYuOCAxLjAzLTIuMDYgMi4yNS02LjU2IDIuNzItMTAgMC40Ny0zLjQ0IDAuNzEtMjIuMjMgMC41NC00MS43NS0wLjE4LTE5LjUzIDAtMzguMSAwLjQtNDEuMjcgMC41Ni00LjU4IDEuMTMtNS44OSAyLjcxLTYuMzQgMS4yMy0wLjM0IDIuNjQgMC4xNCAzLjY4IDEuMjggMC45MyAxIDUuMTIgMTMuMyA5LjMzIDI3LjMzIDQuMiAxNC4wMiA5LjY5IDMyLjAyIDEyLjE5IDQwIDIuNSA3Ljk4IDUuOSAxNy4yIDcuNTYgMjAuNSAxLjcxIDMuNCA1LjY2IDguNjIgOS4xMyAxMi4wNSA0LjI0IDQuMiA3Ljk0IDYuOCAxMi4xMSA4LjQ4IDUuMDggMi4wNSA3LjcgMi40MyAxNy4wMiAyLjQ1IDEwLjQxIDAuMDIgMTEuNC0wLjE2IDE3Ljc1LTMuMjMgNC43NC0yLjI5IDcuODUtNC42NiAxMC41Mi04IDIuMDktMi42MSA0LjY4LTcuMjMgNS43NS0xMC4yNSAxLjg4LTUuMjcgMS45Ni04LjYxIDEuOTYtODEuNXYtNzZjLTMuODgtNy42MS02LjU3LTExLjE3LTguNS0xMi44My0xLjkzLTEuNjUtNC45Ni0zLjYxLTYuNzUtNC4zNC0xLjgyLTAuNzUtNi44Ny0xLjMyLTExLjUtMS4zMS01Ljc3IDAuMDItOS40NSAwLjU3LTEyLjI1IDEuODMtMi4yIDAuOTktNS41NyAzLjYyLTcuNSA1Ljg0LTEuOTMgMi4yMi00LjE2IDUuNzgtNC45NiA3LjkyLTEuMjEgMy4yMS0xLjUxIDEzLjg4LTEuNzUgNjEuMTRsLTAuMjkgNTcuMjVjLTQuMDUtMC40Ni00Ljc0LTEuODQtNi43OC05LjUtMS4zMS00Ljk1LTUuNzctMjAuNDgtOS44OS0zNC41LTQuMTMtMTQuMDMtOS40NS0zMi4yNS0xMS44NC00MC41LTIuMzktOC4yNS01LjI2LTE3LjQ4LTYuMzgtMjAuNS0xLjEzLTMuMDMtMy44LTguNDMtNS45NC0xMi0yLjY4LTQuNDctNS41Ny03LjY5LTkuMjgtMTAuMy0yLjk3LTIuMDktNy42NC00LjQzLTEwLjM5LTUuMjEtMi43NS0wLjc3LTcuNy0xLjYyLTExLTEuODctMy4zLTAuMjYtOC4yNS0wLjExLTExIDAuMzJ6Ii8+CgkJCTxwYXRoIGlkPSJQYXRoIDEgY29weSA1IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsYXNzPSJzNCIgZD0ibTM4MS4wMSAyNjQuMjRjLTIuNDcgMS4yNC01LjUzIDMuODMtNi43OSA1Ljc2LTEuMjcgMS45Mi0yLjczIDUuMDctMy4yNiA3LTAuNTYgMi4wOC0wLjk1IDM2LjQyLTAuOTUgODQuNzUtMC4wMSA3MS4xMyAwLjE4IDgxLjcyIDEuNTQgODUgMC44NSAyLjA2IDIuOTkgNS4yMiA0Ljc1IDcuMDIgMS43NyAxLjgxIDUuNDQgNCA4LjIgNC44OSAzLjI4IDEuMDYgNi44OSAxLjQ0IDEwLjUgMS4xMSAzLjAyLTAuMjggNy40MS0xLjQ3IDkuNzUtMi42NCAyLjM0LTEuMTcgNS4xMS0zLjM3IDYuMTYtNC44OCAxLjA1LTEuNTEgMi41MS00LjEgMy4yMy01Ljc1IDAuOTktMi4yNCAxLjQ1LTEyLjg4IDEuODQtNDIgMC41LTM3LjgyIDAuNTktMzkuMTQgMi43Ny00My43NSAxLjMyLTIuNzkgMy41OS01LjU3IDUuNS02Ljc1IDEuNzktMS4wOSA0Ljk0LTEuOTkgNy0yIDIuMDYgMCA0Ljk5IDAuNjEgNi41IDEuMzYgMS42MiAwLjggMy41NyAzLjE3IDQuNzQgNS43NSAxLjg0IDQuMDggMi4wMiA3LjI0IDIuNSA0NC4zOSAwLjQ4IDM3LjYyIDAuNjMgNDAuMjcgMi41NiA0NC41IDEuMTMgMi40OCAzLjYxIDUuNjkgNS41IDcuMTUgMS45IDEuNDYgNS4yNSAzLjE1IDcuNDUgMy43NSAyLjIgMC42IDUuOCAxLjEgOCAxLjExIDIuMiAwLjAxIDUuNTctMC41IDcuNS0xLjEzIDEuOTMtMC42NCA0Ljk2LTIuMjIgNi43NS0zLjUyIDEuNzktMS4zIDQuMjYtNC4yNyA1LjUtNi42MSAyLjI0LTQuMjQgMi4yNS00LjQxIDIuMjUtNTEuNzUtMC4wMS00Mi41My0wLjE5LTQ4LjIzLTEuODEtNTQuNS0wLjk5LTMuODUtMy4yNC05LjY2LTUtMTIuOS0xLjc1LTMuMjUtNS40NC03Ljg5LTguMTktMTAuMzItMi43NS0yLjQyLTcuNDgtNS4zMi0xMC41LTYuNDMtNC42MS0xLjctNy4yOC0xLjk3LTE2LjUtMS42NC05LjU1IDAuMzMtMTEuNjkgMC43NC0xNi4yNSAzLjA5LTIuODkgMS40OC03LjI3IDQuNzItOS43NSA3LjItMi40OCAyLjQ4LTQuNSA0Ljk1LTQuNSA1LjUgMCAwLjU1LTAuNDUgMS0xIDEtMC42MyAwLTEuMDktOS4xMS0xLjI1LTI0LjgzbC0wLjI1LTI0LjgyYy01LjM3LTEwLjQ3LTYuOTQtMTIuMTktMTAuNS0xNC4wNC0zLjU3LTEuODctNi4wNi0yLjM1LTEyLTIuMzQtNS43NyAwLjAxLTguNTMgMC41My0xMS45OSAyLjI3eiIvPgoJCQk8cGF0aCBpZD0iUGF0aCAxIGNvcHkgNiIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGFzcz0iczUiIGQ9Im02NjEuNSAyNzAuNTJjLTIuMiAwLjc5LTUuMTMgMi4yNi02LjUgMy4yNi0xLjM4IDEtMy42MyA0LjA1LTUgNi43Ny0yLjI3IDQuNDktMi41MiA2LjI2LTIuNzUgMTkuMmwtMC4yNSAxNC4yNWMtNS44MS0wLjAxLTkuNTIgMS0xMiAyLjI0LTIuOTcgMS40OS01LjA5IDMuNDUtNi4yMiA1Ljc2LTAuOTUgMS45Mi0yLjAyIDUuNTItMi4zOCA4LTAuNDIgMi45NC0wLjA4IDYuNDkgMC45OCAxMC4yNSAxLjE5IDQuMjMgMi40OCA2LjQxIDQuODcgOC4yNSAyLjA5IDEuNjEgNS4yOCAyLjc3IDguOTMgMy4yNWw1LjY4IDAuNzVjMC43NCA2Ni43NSAxLjA5IDczLjk5IDIuNDcgNzguNzUgMC45MiAzLjE2IDIuNTcgNy41NSAzLjY3IDkuNzUgMS4xIDIuMiAzLjkxIDUuODkgNi4yNSA4LjIgMi4zNCAyLjMxIDYuOTUgNS40NCAxMC4yNSA2Ljk2IDMuMyAxLjUyIDkuMzggMy4yOSAxMy41IDMuOTIgNC4xMyAwLjY0IDEwLjQyIDAuODkgMTQgMC41NiAzLjU4LTAuMzMgOC43NS0xLjI2IDExLjUtMi4wNiAyLjc1LTAuODEgNi4yNC0yLjM5IDcuNzUtMy41MiAxLjUxLTEuMTMgMy42LTMuNzUgNC42My01LjgxIDEuMDMtMi4wNiAyLjE5LTUuNTUgMi41OC03Ljc1IDAuMzktMi4yOSAwLjE4LTUuOTItMC41LTguNS0wLjcyLTIuNzMtMi42Mi01Ljk2LTQuODMtOC4yMS0yLjQ3LTIuNTItNC41OC0zLjc0LTYuNjMtMy44Mi0xLjY1LTAuMDYtNC44LTAuMzMtNy0wLjU5LTIuMi0wLjI3LTUuMDEtMS4xNC02LjI1LTEuOTMtMS4yNC0wLjgtMi45LTIuNDYtMy43LTMuNy0xLjE0LTEuNzgtMS41Ni04LjU1LTItMzIuNWwtMC41NS0zMC4yNWMxNC44NSAwLjAyIDE3LjM5LTAuNDQgMjAuOTQtMi4yNCAzLjA1LTEuNTUgNS4wOS0zLjUyIDYuNS02LjI2IDEuNTEtMi45MyAyLjA2LTUuOSAyLjA2LTExLjA3IDAtNi4wNC0wLjQtNy42OS0yLjc1LTExLjI1LTEuNTgtMi40MS00LjI0LTQuODItNi4yNS01LjY4LTIuMi0wLjk0LTYuNjctMS41LTEyLTEuNWgtOC41YzAuMjktMjAuMTQtMC4xMy0yNy4yOS0wLjgxLTI5Ljc1LTAuNjYtMi4zNC0yLjg4LTYuMDctNC45NC04LjI5LTIuMjktMi40Ny01LjUtNC42Mi04LjI1LTUuNTItMi40OC0wLjgtNi4zLTEuNDQtOC41LTEuNDEtMi4yIDAuMDMtNS44IDAuNy04IDEuNDl6Ii8+CgkJCTxwYXRoIGlkPSJQYXRoIDEgY29weSA3IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsYXNzPSJzNiIgZD0ibTg0My41IDMxMS4xMmMtMy4zIDAuNDgtOC45MiAxLjgxLTEyLjUgMi45Ni0zLjU4IDEuMTUtOC4wOCAzLjA0LTEwIDQuMi0xLjkyIDEuMTYtNS4zIDMuNjMtNy41IDUuNDktMi4yIDEuODYtNS43NSA1LjcyLTcuOSA4LjU2LTIuMTQgMi44NC01LjIzIDguMDktNi44NiAxMS42Ny0xLjYzIDMuNTctMy44OCAxMC41NS01LjAxIDE1LjUtMS42MyA3LjEzLTIuMDYgMTIuNTQtMi4wOSAyNi0wLjAzIDE0LjM2IDAuMzIgMTguNDcgMi4yNiAyNi41IDEuMjYgNS4yMiAzLjgxIDEyLjY1IDUuNjYgMTYuNSAxLjg2IDMuODUgNS45OCA5Ljg5IDkuMTYgMTMuNDMgMy4xOCAzLjUzIDguMTQgNy45MiAxMS4wMyA5Ljc1IDIuODkgMS44MiA4Ljc0IDQuNTEgMTMgNS45NyA2LjY3IDIuMjkgOS40OSAyLjY3IDIwLjI1IDIuNzUgNy42NSAwLjA2IDE0LjY0LTAuNDQgMTgtMS4yOCAzLjAyLTAuNzYgOC40Mi0yLjcyIDEyLTQuMzUgNC4yMS0xLjkxIDguNzMtNS4xMiAxMi44Mi05LjExIDQuMTEtNCA3LjQ0LTguNDQgOS41LTEyLjY2IDIuMjktNC43MSAzLjI3LTguMjkgMy41NS0xMyAwLjIxLTMuNTggMC4xLTguMTktMC4yNC0xMC4yNS0wLjQtMi4zNS0yLjAzLTUuMjctNC4zOC03LjgyLTIuNjItMi44NS01LjI2LTQuNTEtOC43NS01LjUxLTIuNzUtMC43OS02LjM1LTEuNDMtOC0xLjQyLTEuNjUgMC00LjY5IDAuNDYtNi43NSAxLjAxLTIuMDYgMC41NC01LjE4IDIuMjMtNi45MyAzLjc0LTEuNzUgMS41MS00LjYxIDUuOS02LjM3IDkuNzUtMS43NiAzLjg1LTQuMjEgNy45LTUuNDUgOS0xLjM5IDEuMjQtNC4wMSAyLjEyLTYuODcgMi4zMS0zLjA0IDAuMi01LjgxLTAuMzItOC4wNi0xLjUtMi4wMi0xLjA3LTQuMjctMy40Ni01LjQ2LTUuODEtMS4xMS0yLjItMi42LTYuNDgtMy4zLTkuNS0wLjctMy4wMy0xLjI5LTExLjEzLTEuMy0xOC0wLjAxLTYuODggMC40Ny0xNS4yIDEuMDYtMTguNSAwLjYtMy4zIDIuMTctNy45MSAzLjUxLTEwLjI1IDEuMzMtMi4zNCAzLjQzLTQuOTQgNC42Ny01Ljc4IDEuMjQtMC44NCA0LjM2LTEuNjMgNi45My0xLjc1IDMuNDItMC4xNiA1LjQ0IDAuMzQgNy41IDEuODYgMS41NSAxLjE0IDQuNDYgNS4xOSA2LjQ3IDkgMi4wMSAzLjggNC45MyA3LjkxIDYuNSA5LjEzIDEuNTcgMS4yMSA0Ljg3IDIuNzQgNy4zNSAzLjQgMi42MSAwLjY5IDYuNiAwLjkyIDkuNSAwLjU1IDIuNzYtMC4zNiA2Ljk4LTEuODkgOS40MS0zLjQgMi42Mi0xLjY0IDUuMjUtNC4zOCA2LjQ3LTYuNzYgMS41Mi0yLjkzIDIuMDctNS44NyAyLjA2LTExIDAtNS43MS0wLjU3LTguMi0zLjA2LTEzLjUtMS42OC0zLjU4LTUuNDktOS4xNC04LjQ3LTEyLjM2LTMuOTMtNC4yNS03LjYtNi45NC0xMy40MS05LjgtNS45Ny0yLjk1LTEwLjQxLTQuMzEtMTcuNS01LjM5LTUuMjMtMC43OS0xMS4wOC0xLjM4LTEzLTEuMzItMS45MiAwLjA2LTYuMiAwLjUxLTkuNSAwLjk5eiIvPgoJCQk8cGF0aCBpZD0iUGF0aCAxIGNvcHkgOCIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGFzcz0iczIiIGQ9Im03NDcgMzE1LjljLTMuNDYgMS4yMy02LjUzIDMuMTktOC4yOCA1LjI4LTEuNTQgMS44Mi0zLjQ1IDUuNTctNC4yNiA4LjMyLTEuMjIgNC4xMy0xLjQ4IDE0LjE0LTEuNDggNTcuNSAwIDQ1LjQ0IDAuMjIgNTMuMjQgMS42MiA1OHExLjYyIDUuNSA1LjI2IDkuMDNjMi4yNyAyLjIxIDUuNDIgMy45OSA4LjM5IDQuNzUgMi42MSAwLjY3IDYuNDQgMS4yMyA4LjUgMS4yNCAyLjA2IDAuMDEgNS4zMy0wLjUxIDcuMjUtMS4xNCAxLjkyLTAuNjQgNS4wNS0yLjMzIDYuOTQtMy43NyAxLjktMS40MyA0LjQ4LTQuODYgNS43NC03LjYxbDIuMy01YzAuMDEtODUuOTItMC4zOS0xMTAuNDgtMC45NC0xMTIuNS0wLjUzLTEuOTMtMi01LjA4LTMuMjktNy0xLjI4LTEuOTMtNC4zMy00LjU4LTYuNzktNS45MS0yLjY4LTEuNDUtNi42NS0yLjU2LTkuOTYtMi43OC0zLjcyLTAuMjUtNy4yOCAwLjI3LTExIDEuNTl6Ii8+CgkJCTxwYXRoIGlkPSJQYXRoIDEgY29weSA5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsYXNzPSJzMSIgZD0ibTU3MSAzMTAuNThjNC4xMiAwLjI0IDkuOTggMS4xMSAxMyAxLjkyIDMuMDIgMC44MiA3Ljk4IDIuNzIgMTEgNC4yMiAzLjAyIDEuNTEgOC40NCA1LjY4IDEyLjAzIDkuMjYgMy41OSAzLjU5IDcuOTQgOS4yMiA5LjY3IDEyLjUyIDEuNzQgMy4zIDQuMTIgOS4zNyA1LjI5IDEzLjUgMS4xOCA0LjEyIDIuNDIgMTIgMi43NSAxNy41IDAuNDkgNy45NSAwLjI4IDEwLjkyLTEuMDMgMTQuNS0wLjkxIDIuNDctMi45IDUuNjgtNC40MyA3LjExLTEuNTMgMS40NC00LjM2IDMuMTQtNi4yOCAzLjc3LTIuMzQgMC43Ny0xMy42OCAxLjE1LTY1IDEuMTJsMC40NCAyLjI1YzAuMjUgMS4yNCAwLjc0IDQuMDUgMS4xIDYuMjUgMC4zNiAyLjIgMS43NCA2LjE0IDMuMDYgOC43NSAxLjMyIDIuNjEgMy44NiA1Ljc1IDUuNjUgNi45NyAyLjA0IDEuNCA1LjMgMi4zOSA4Ljc1IDIuNjYgNC42MSAwLjM3IDYuMjMgMC4wMiAxMC0yLjE4IDIuNDgtMS40NCA2LjUyLTQuNjggOS03LjE4IDIuNDgtMi41MSA2LjA4LTUuMDYgOC01LjY3IDEuOTItMC42MSA2LTAuOTQgOS4wNi0wLjczIDMuOTMgMC4yNyA2Ljc5IDEuMTkgOS43NSAzLjEzIDIuODMgMS44NiA0Ljg4IDQuMjkgNi4zMyA3LjUgMS43MyAzLjg2IDIuMDIgNS44NyAxLjUxIDEwLjc1LTAuMzcgMy42LTEuNTYgNy42LTIuOTkgMTAtMS4zMSAyLjItNC41OCA1LjkzLTcuMjcgOC4yOS0yLjY5IDIuMzYtOC4wNCA1LjgxLTExLjg5IDcuNjYtMy44NSAxLjg1LTkuNyAzLjk1LTEzIDQuNjctMy4zIDAuNzEtMTEuNCAxLjI5LTE4IDEuMjktOC4yMSAwLTE0LjA1LTAuNTQtMTguNS0xLjczLTMuNTgtMC45NS04Ljc1LTIuODItMTEuNS00LjE1LTIuNzUtMS4zMy03LjE5LTQuMTMtOS44Ny02LjIyLTIuNjgtMi4xLTYuOTEtNi41MS05LjQtOS44MS0yLjQ4LTMuMy01LjU2LTguMjUtNi44NC0xMS0xLjI4LTIuNzUtMy4yNy04LjYtNC40My0xMy0xLjU0LTUuODQtMi4yNi0xMi4zMi0yLjY1LTI0LTAuMzUtMTAuMDctMC4xMS0xOC43OCAwLjYzLTIzLjUgMC42NC00LjEzIDIuMDktMTAuNDMgMy4yLTE0IDEuMTItMy41OCAzLjY4LTkuNjUgNS43LTEzLjUgMi4xOS00LjE5IDYuMDctOS4zNiA5LjY2LTEyLjg4IDMuMy0zLjIzIDcuOC02LjkxIDEwLTguMTcgMi4yLTEuMjcgNi44MS0zLjIzIDEwLjI1LTQuMzcgMy40NC0xLjE1IDkuMjktMi41IDEzLTMuMDEgMy43MS0wLjUyIDEwLjEyLTAuNzQgMTQuMjUtMC40OXptLTkuNSAzNi4xNWMtMS4xIDAuMjgtMy4yNCAxLjM1LTQuNzUgMi4zOS0xLjUxIDEuMDMtMy42MSAzLjU3LTQuNjYgNS42My0xLjA2IDIuMDYtMi4zIDYuMTItMi43NSA5LjAybC0wLjg0IDUuMjZjMzIuODMtMC4wMyAzMy41LTAuMTEgMzMuNS0yLjAzIDAtMS4xLTAuNTQtNC4zNi0xLjE5LTcuMjUtMC42NS0yLjg5LTIuMzQtNi41Ni0zLjc1LTguMTctMS40MS0xLjYtNC4wMi0zLjUxLTUuODEtNC4yNS0xLjc5LTAuNzMtNC4yNi0xLjI4LTUuNS0xLjIxLTEuMjQgMC4wNi0zLjE1IDAuMzQtNC4yNSAwLjYxeiIvPgoJCQk8cGF0aCBpZD0iUGF0aCAxIGNvcHkgMTAiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xhc3M9InM3IiBkPSJtOTg2Ljc1IDMxMS4yNWM1LjA5IDAuNDEgMTIuMDYgMS42OSAxNS41IDIuODUgMy40NCAxLjE1IDguMjQgMy4yOSAxMC42NyA0Ljc1IDIuNDQgMS40NiA2LjQxIDQuOSA4LjgzIDcuNjUgMi40MyAyLjc1IDUuNDkgNy4yNSA2LjggMTAgMS4zMSAyLjc1IDMuMTYgNy43IDQuMTEgMTEgMS40OCA1LjE2IDEuNzcgMTIuMTUgMi4xMSA1MCAwLjI4IDMyLjQ1IDAuMDYgNDUuMDUtMC44MyA0OC0wLjY2IDIuMi0yLjAzIDUuMTItMy4wNCA2LjUtMS4wMSAxLjM3LTMuNzcgMy41OC02LjEyIDQuODktMi4zNSAxLjMyLTYuNTMgMi42Mi05LjI4IDIuODktMi43NSAwLjI3LTYuOC0wLjA3LTktMC43Ny0yLjItMC42OS01LjQ2LTIuMzMtNy4yNS0zLjYzLTEuNzktMS4zMS0zLjk5LTQuMDctNi41Mi05Ljg4bC00LjEyIDQuMDRjLTIuMjYgMi4yMy02LjU5IDUuMjYtOS42MSA2Ljc0LTMuMDUgMS40OS05LjA2IDMuMjItMTMuNSAzLjg5LTYuMjEgMC45NC05LjUxIDAuOTQtMTQuNzUgMC4wMi0zLjcxLTAuNjUtOS4yOS0yLjQzLTEyLjM5LTMuOTQtMy4yNy0xLjU5LTcuOC01LjA2LTEwLjc5LTguMjUtMy4zLTMuNTMtNS45Ny03LjY1LTcuNDUtMTEuNS0xLjUtMy45My0yLjQ4LTkuMS0yLjgyLTE1LTAuMy01LjAyLTAuMDMtMTEuNjUgMC42MS0xNSAwLjYzLTMuMyAyLjI1LTguMzYgMy42Mi0xMS4yNSAxLjM2LTIuODkgNC42MS03LjU1IDcuMjItMTAuMzUgMy4zMi0zLjU3IDcuMTYtNi4yNSAxMi43NS04LjkxIDQuNC0yLjA5IDEwLjctNC41NCAxNC01LjQ0IDMuMy0wLjkgMTIuNDEtMS45NiAzNC41MS0zLjA1bC0wLjAxLTQuMjVjMC0yLjM0LTAuNi01LjcxLTEuMzItNy41LTAuNzMtMS43OS0yLjY0LTQuMy00LjI1LTUuNTktMi41OC0yLjA2LTMuNzktMi4zMS0xMC4wMi0yLTYuMDIgMC4yOS03Ljg5IDAuODUtMTIuNSAzLjc4LTIuOTcgMS44OC03LjIxIDQuMzQtOS40MSA1LjQ1LTIuNyAxLjM3LTUuOTUgMi4wMi0xMCAyLjAxLTQuMzMtMC4wMS03LjExLTAuNjMtMTAtMi4yNC0yLjItMS4yMy01LjAxLTMuNjgtNi4yNC01LjQ1LTEuMjQtMS43Ny0yLjUyLTUuNDYtMi44Ni04LjIxLTAuMzQtMi43NS0wLjEyLTYuOTEgMC40OS05LjI1IDAuNjItMi4zOCAyLjc2LTYuMDUgNC44Ni04LjM1IDIuMTQtMi4zNCA2Ljc1LTUuNTUgMTAuNzUtNy40OSAzLjg1LTEuODYgOS45Mi00LjEyIDEzLjUtNS4wMiAzLjU4LTAuODkgMTAuNTUtMS45MSAxNS41LTIuMjYgNC45NS0wLjM1IDEzLjE2LTAuMjkgMTguMjUgMC4xMnptLTkuMjUgODQuODljLTMuMyAwLjUtNy4zNSAxLjctOSAyLjY5LTEuNjUgMC45OC00LjAzIDMuMzMtNS4yOCA1LjIzLTEuNjYgMi41LTIuMjcgNC44Ny0yLjI1IDguNjkgMC4wMiAyLjg5IDAuNjQgNi40OSAxLjM5IDggMC43NSAxLjUxIDMuMTEgMy41OSA1LjI1IDQuNjIgMi44NyAxLjM4IDQuOTQgMS43IDcuODkgMS4xOSAyLjItMC4zNyA1LjM1LTEuNSA3LTIuNTEgMS42NS0xIDMuODktMy4xMSA0Ljk3LTQuNjkgMS42MS0yLjMzIDIuMDItNC44NSAyLjI0LTEzLjYxbDAuMjctMTAuNzVjLTUuMDIgMC4xOS05LjE4IDAuNjUtMTIuNDggMS4xNHoiLz4KCQk8L2c+Cgk8L2c+Cjwvc3ZnPg==" alt="Nohética" class="brand-logo">
+    </a>
+    <a href="#cta-final" class="btn btn-ghost btn-small">Em breve na Google Play</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===== 1. Hero ===== -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">Aplicativo para estudo de Matemática</p>
+        <h1 class="hero-title">Gere. Resolva. Aprenda.</h1>
+        <p class="hero-text">
+          Nohética é um aplicativo focado em Expressões Numéricas. Gere uma expressão,
+          acompanhe a resolução passo a passo e aprenda com o processo.
+        </p>
+        <div class="hero-actions">
+          <a href="#" id="play-store-btn-hero" class="btn-store">
+            <svg class="btn-store-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M4 3.5L15.5 12L4 20.5V3.5Z" fill="currentColor"/>
+              <path d="M4 3.5L18.5 11L15.5 12L4 20.5V3.5Z" fill="currentColor" fill-opacity="0.55"/>
+            </svg>
+            <span class="btn-store-text">
+              <span class="btn-store-small">EM BREVE NO</span>
+              <span class="btn-store-big">Google Play</span>
+            </span>
+          </a>
+          <a href="#como-funciona" class="btn btn-ghost">Ver como funciona</a>
+        </div>
+        <p class="status-note">
+          Em fase de testes fechados (closed testing) na Google Play desde 24/08 —
+          a abertura ao público deve levar cerca de duas semanas após o início dessa fase.
+        </p>
+      </div>
+
+      <div class="hero-visual" aria-hidden="false" role="img" aria-label="Telas do aplicativo mostrando a geração de uma expressão e sua resolução passo a passo">
+        <!--
+          BLOCO SUBSTITUÍVEL: expressão numérica de demonstração.
+          A sequência de passos é controlada em script.js, na constante EXPRESSION_STEPS.
+          Basta trocar os valores lá para refletir a expressão real usada no aplicativo.
+          A lista de etapas na tela de trás (phone-back) é estática e ilustrativa;
+          atualize os textos de .phone-step para refletir a resolução real, se necessário.
+        -->
+        <div class="phone-mock phone-back">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-screen-header">Passo a passo</div>
+            <div class="phone-step-list">
+              <div class="phone-step">
+                <span class="phone-step-num">Etapa 1</span>
+                <p class="phone-step-expr">(7 − 3) = 4</p>
+              </div>
+              <div class="phone-step">
+                <span class="phone-step-num">Etapa 2</span>
+                <p class="phone-step-expr">4² = 16</p>
+              </div>
+              <div class="phone-step">
+                <span class="phone-step-num">Etapa 3</span>
+                <p class="phone-step-expr">4 × 16 = 64</p>
+              </div>
+              <div class="phone-step phone-step-result">
+                <span class="phone-step-num">Resultado</span>
+                <p class="phone-step-expr">12 + 64 = 76</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="phone-mock phone-front">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-screen-header">Gerar</div>
+
+            <div class="expression-card" id="expression-card">
+              <div class="expression-card-label">Expressão</div>
+              <div class="expression-display" id="expression-display" aria-live="polite">
+                <span id="expression-text"></span>
+              </div>
+              <div class="expression-status" id="expression-status">
+                <span class="status-dot" id="status-dot"></span>
+                <span id="status-text">Resolvendo…</span>
+              </div>
+            </div>
+
+            <button type="button" class="phone-generate-btn">Gerar nova expressão</button>
+
+            <div class="phone-tabbar">
+              <span class="phone-tab is-active">Gerar</span>
+              <span class="phone-tab">Passo a passo</span>
+              <span class="phone-tab">Aprender</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 2. Como funciona ===== -->
+  <section class="section how-it-works" id="como-funciona">
+    <div class="container">
+      <h2 class="section-title">Como funciona</h2>
+      <div class="steps">
+        <article class="step">
+          <div class="step-marker">
+            <span class="step-number">Etapa 1</span>
+            <svg class="step-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="6" y="6" width="36" height="36" rx="8" stroke="currentColor" stroke-width="2"/>
+              <path d="M17 24H31M24 17V31" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Gere uma expressão</h3>
+          <p>O aplicativo gera uma expressão numérica para você praticar.</p>
+        </article>
+
+        <article class="step">
+          <div class="step-marker">
+            <span class="step-number">Etapa 2</span>
+            <svg class="step-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M8 24H18M30 24H40M24 8V18M24 30V40" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="24" cy="24" r="6" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <h3>Veja a resolução passo a passo</h3>
+          <p>Acompanhe cada etapa da resolução, na ordem em que ela acontece.</p>
+        </article>
+
+        <article class="step">
+          <div class="step-marker">
+            <span class="step-number">Etapa 3</span>
+            <svg class="step-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 28L20 36L38 14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Aprenda com o processo</h3>
+          <p>Entenda o raciocínio por trás de cada resultado, não só a resposta final.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3. Sobre a Nohética ===== -->
+  <section class="section about" id="sobre">
+    <div class="container container-narrow">
+      <h2 class="section-title">Sobre a Nohética</h2>
+
+      <p class="about-lead">
+        Nohética é um aplicativo educacional para auxiliar no estudo de Matemática.
+        Desenvolvido por Pi Sousa — em sua primeira experiência prática de
+        desenvolvimento de software de ponta a ponta — em parceria com Juliana
+        Miranda, responsável por Design e UX/UI. Disponível em sua primeira versão
+        com Expressões Numéricas: gere, resolva e aprenda Expressões Numéricas
+        com Nohética!
+      </p>
+
+      <p class="about-kicker">Um pouco de contexto sobre Nohética</p>
+
+      <p class="about-text">
+        O projeto nasceu da ideia de criar uma ferramenta simples e acessível para
+        apoiar o estudo de Matemática. Nesta primeira versão, o app é focado em
+        Expressões Numéricas, permitindo ao usuário gerar expressões, receber sua
+        resolução passo a passo e aprender com o processo.
+      </p>
+
+      <p class="about-text">
+        O processo envolveu decisões de UX/UI, design responsivo, Kotlin,
+        implementação em Android com Jetpack Compose e integração com Firebase —
+        incluindo as decisões e a configuração das métricas.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. Recursos ===== -->
+  <section class="section features" id="recursos">
+    <div class="container">
+      <h2 class="section-title">Recursos</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3>Geração de expressões numéricas</h3>
+          <p>Expressões geradas para você praticar sempre que quiser.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Resolução passo a passo</h3>
+          <p>Cada etapa da resolução apresentada de forma clara.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Aprendizado através do processo</h3>
+          <p>O foco está em entender o caminho até o resultado.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Interface simples e responsiva</h3>
+          <p>Uma experiência direta, pensada para uso no celular.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 5. Tecnologias ===== -->
+  <section class="section tech" id="tecnologias">
+    <div class="container">
+      <p class="tech-label">Desenvolvido com</p>
+      <ul class="tech-list">
+        <li>Kotlin</li>
+        <li>Jetpack Compose</li>
+        <li>Firebase</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== 6. CTA final ===== -->
+  <section class="section cta-final" id="cta-final">
+    <div class="container container-narrow">
+      <h2 class="section-title">Conheça a Nohética</h2>
+      <p class="cta-text">Acompanhe o lançamento e seja um dos primeiros a experimentar.</p>
+      <a href="#" class="btn btn-primary" id="play-store-btn">Em breve na Google Play</a>
+      <p class="status-note status-note-center">
+        Em testes fechados na Google Play desde 24/08 — previsão de abertura ao
+        público em cerca de duas semanas.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== 7. Rodapé ===== -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <span class="wordmark wordmark-footer">Nohética</span>
+      <span class="footer-tagline">Gere. Resolva. Aprenda.</span>
+    </div>
+    <!-- Espaço reservado para links futuros -->
+    <nav class="footer-links" aria-label="Links institucionais">
+      <a href="#" class="footer-link" id="link-privacidade">Política de Privacidade</a>
+      <a href="#" class="footer-link" id="link-contato">Contato</a>
+      <a href="#" class="footer-link" id="link-google-play">Google Play</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+/* =========================================================
+   Nohética — script.js
+   Vanilla JS, sem dependências externas.
+   ========================================================= */
+
+(function () {
+  "use strict";
+
+  /* ---------------------------------------------------------
+     CONFIGURAÇÃO DA EXPRESSÃO DE DEMONSTRAÇÃO (Hero)
+     ---------------------------------------------------------
+     Substitua os valores abaixo pela expressão real gerada
+     pelo aplicativo, mantendo o mesmo formato:
+
+     - text:      como a expressão aparece nesta etapa
+     - highlight: o trecho de "text" que deve ficar destacado
+                  nesta etapa (precisa existir dentro de "text")
+     - result:    marque "true" apenas na última etapa (resultado final)
+
+     Exemplo abaixo ilustra a ordem de operações
+     (parênteses → potência → multiplicação → adição).
+  --------------------------------------------------------- */
+  const EXPRESSION_STEPS = [
+    { text: "12 + 4 × (7 − 3)²", highlight: "(7 − 3)" },
+    { text: "12 + 4 × 4²", highlight: "4²" },
+    { text: "12 + 4 × 16", highlight: "4 × 16" },
+    { text: "12 + 64", highlight: "12 + 64" },
+    { text: "76", highlight: "76", result: true }
+  ];
+
+  const STEP_DURATION_MS = 2200;
+  const RESULT_PAUSE_MS = 2800;
+
+  const textEl = document.getElementById("expression-text");
+  const displayEl = document.getElementById("expression-display");
+  const statusDot = document.getElementById("status-dot");
+  const statusText = document.getElementById("status-text");
+
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  function renderStep(step) {
+    if (!textEl) return;
+
+    const isResult = Boolean(step.result);
+    const safeText = escapeHtml(step.text);
+    const safeHighlight = escapeHtml(step.highlight);
+
+    let html = safeText;
+    if (safeHighlight && safeText.includes(safeHighlight)) {
+      html = safeText.replace(
+        safeHighlight,
+        '<span class="hl">' + safeHighlight + "</span>"
+      );
+    }
+
+    textEl.innerHTML = html;
+    displayEl.classList.toggle("is-result", isResult);
+    statusDot.classList.toggle("is-solved", isResult);
+    statusText.textContent = isResult ? "Resolvido" : "Resolvendo…";
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function startExpressionLoop() {
+    if (!EXPRESSION_STEPS.length || !textEl) return;
+
+    if (prefersReducedMotion) {
+      // Respeita a preferência do usuário: mostra apenas o resultado final, sem animação.
+      renderStep(EXPRESSION_STEPS[EXPRESSION_STEPS.length - 1]);
+      return;
+    }
+
+    let index = 0;
+
+    function tick() {
+      const step = EXPRESSION_STEPS[index];
+      renderStep(step);
+
+      const isLast = index === EXPRESSION_STEPS.length - 1;
+      const delay = isLast ? RESULT_PAUSE_MS : STEP_DURATION_MS;
+
+      index = isLast ? 0 : index + 1;
+      window.setTimeout(tick, delay);
+    }
+
+    tick();
+  }
+
+  /* ---------------------------------------------------------
+     Links do rodapé e botões da Google Play.
+     Preparados para receber URLs reais futuramente.
+  --------------------------------------------------------- */
+  function wirePlaceholderLinks() {
+    const placeholders = {
+      "play-store-btn": null,
+      "play-store-btn-hero": null,
+      "link-privacidade": null,
+      "link-contato": null,
+      "link-google-play": null
+    };
+
+    Object.keys(placeholders).forEach(function (id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener("click", function (event) {
+        if (!el.getAttribute("href") || el.getAttribute("href") === "#") {
+          event.preventDefault();
+        }
+      });
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    startExpressionLoop();
+    wirePlaceholderLinks();
+  });
+})();
+
+</script>
+</body>
+</html>
