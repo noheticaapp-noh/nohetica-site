@@ -186,17 +186,25 @@ img, svg { display: block; max-width: 100%; }
 
 /* ---------- Imagens ---------- */
 
-   .about-image-full {
-  width: 100%;
+.about-image-full {
+  position: relative;
+  left: 50%;
+  right: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  margin-right: -50vw;
   margin-top: 3rem;
 }
-
 .about-image-full img {
   width: 100%;
   height: auto;
   display: block;
 }
+body {
+  overflow-x: hidden;
+}
 
+   
 .how-it-works {
   background: var(--color-appbg);
 }
