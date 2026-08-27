@@ -186,6 +186,29 @@ img, svg { display: block; max-width: 100%; }
 
 /* ---------- Imagens ---------- */
 
+   .about-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+.about-content .about-lead,
+.about-content .section-title {
+  text-align: left;
+}
+.about-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 20px;
+}
+@media (min-width: 720px) {
+  .about-grid {
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 3rem;
+  }
+}
+   
 .about-image-full {
   position: relative;
   left: 50%;
