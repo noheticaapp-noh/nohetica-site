@@ -209,19 +209,21 @@ img, svg { display: block; max-width: 100%; }
   }
 }
    
-.about-image-full {
-  position: relative;
-  left: 50%;
-  right: 50%;
-  width: 100vw;
-  margin-left: -50vw;
-  margin-right: -50vw;
-  margin-top: 3rem;
+.site-floor {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: -1;
+  pointer-events: none;
 }
-.about-image-full img {
+.site-floor img {
   width: 100%;
   height: auto;
   display: block;
+}
+body {
+  padding-bottom: 260px;
 }
 body {
   overflow-x: hidden;
@@ -1060,9 +1062,6 @@ body {
       </p>
     </div>
   </section>
-     <div class="about-image-full">
-  <img src="assets/bgsitenoh1.png" alt="Elementos gráficos inspirados na matemática">
-</div>
 </main>
 
 <!-- ===== 7. Rodapé ===== -->
@@ -1207,5 +1206,8 @@ body {
 })();
 
 </script>
+   <div class="site-floor">
+  <img src="assets/bgsitenoh1.png" alt="Elementos gráficos inspirados na matemática">
+</div>
 </body>
 </html>
